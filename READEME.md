@@ -34,7 +34,7 @@ This prototype is built using standard web technologies:
 
 ## 📷 Preview
 
-![Optimus Healthcare Preview](Projectlogo.jpg)  
+![Optimus Healthcare Preview](preview.png)  
 > *Screenshot of the prototype UI (images like `Projectlogo.jpg`, `hospitalmessage.png` available in repository)*
 
 ---
