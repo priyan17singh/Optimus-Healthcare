@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPTIMUS HEALTHCARE</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #00796b;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            text-align: left;
+            color: #00796b;
+            font-weight: bold;
+        }
+
+        input, select {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #00796b;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #004d40;
+        }
+
+        #results {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+            text-align: left;
+        }
+
+        .blood-bank {
+            background-color: #e0f7fa;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+
+        .actions button {
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            background-color: #00796b;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .actions button:hover {
+            background-color: #004d40;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #3498db;
+            color: white;
+            font-size: 1em;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Blood Bank Locator</h1>
+        <form id="locatorForm">
+            <label for="state">State:</label>
+            <select id="state" name="state" required>
+                <option value="">Select State</option>
+                <!-- Example options, these should be dynamically populated -->
+                <option value="State1">State1</option>
+                <option value="State2">State2</option>
+            </select>
+
+            <label for="district">District:</label>
+            <select id="district" name="district" required>
+                <option value="">Select District</option>
+                <!-- Example options, these should be dynamically populated based on the selected state -->
+            </select>
+
+            <label for="bloodType">Blood Type:</label>
+            <select id="bloodType" name="bloodType" required>
+                <option value="">Select Blood Type</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+            </select>
+
+            <label for="component">Blood Component:</label>
+            <select id="component" name="component" required>
+                <option value="">Select Component</option>
+                <option value="Whole Blood">Whole Blood</option>
+                <option value="Plasma">Plasma</option>
+                <option value="Platelets">Platelets</option>
+                <option value="Red Blood Cells">Red Blood Cells</option>
+            </select>
+
+            <button type="submit">Search</button>
+        </form>
+        <div id="results"></div>
+        <a href="bloodbankpage1.html" class="back-button">Back to Blood Bank Page</a>
+    </div>
+    <script>
+        // Example data for states and districts
+        const stateDistricts = {
+            State1: ['District1A', 'District1B'],
+            State2: ['District2A', 'District2B']
+        };
+
+        // Populate districts based on selected state
+        document.getElementById('state').addEventListener('change', function () {
+            const state = this.value;
+            const districtSelect = document.getElementById('district');
+            districtSelect.innerHTML = '<option value="">Select District</option>';
+
+            if (state) {
+                stateDistricts[state].forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('locatorForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const state = document.getElementById('state').value;
+            const district = document.getElementById('district').value;
+            const bloodType = document.getElementById('bloodType').value;
+            const component = document.getElementById('component').value;
+
+            // Example blood bank data, this should be fetched from a backend service
+            const bloodBanks = [
+                {
+                    name: 'Blood Bank 1',
+                    address: 'Address 1',
+                    contact: '123-456-7890',
+                    availability: {
+                        'A+': { 'Whole Blood': 10, 'Plasma': 5, 'Platelets': 8, 'Red Blood Cells': 6 },
+                        'B+': { 'Whole Blood': 7, 'Plasma': 3, 'Platelets': 9, 'Red Blood Cells': 2 }
+                    }
+                },
+                {
+                    name: 'Blood Bank 2',
+                    address: 'Address 2',
+                    contact: '987-654-3210',
+                    availability: {
+                        'A+': { 'Whole Blood': 5, 'Plasma': 2, 'Platelets': 4, 'Red Blood Cells': 3 },
+                        'O+': { 'Whole Blood': 10, 'Plasma': 7, 'Platelets': 3, 'Red Blood Cells': 8 }
+                    }
+                }
+            ];
+
+            const results = bloodBanks
+                .filter(bank => bank.availability[bloodType] && bank.availability[bloodType][component] > 0)
+                .map(bank => `
+                    <div class="blood-bank">
+                        <h3>${bank.name}</h3>
+                        <p><strong>Address:</strong> ${bank.address}</p>
+                        <p><strong>Contact:</strong> ${bank.contact}</p>
+                        <p><strong>Available Units of ${component}:</strong> ${bank.availability[bloodType][component]}</p>
+                        <div class="actions">
+                            <button onclick="alert('Message sent to ${bank.name}')">Send Message</button>
+                            <button onclick="alert('Request for blood sent to ${bank.name}')">Ask for Blood</button>
+                            <button onclick="window.location.href='tel:${bank.contact}'">Call</button>
+                        </div>
+                    </div>
+                `).join('');
+
+            document.getElementById('results').innerHTML = results || '<p>No blood banks found with the selected criteria.</p>';
+        });
+    </script>
+</body>
+</html>

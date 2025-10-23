@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Telemedicine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f3f4f6;
+        }
+        #video-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+        }
+        video {
+            width: 48%;
+            height: auto;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        #waiting {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Patient Telemedicine</h1>
+    <div id="video-container">
+        <video id="localVideo" autoplay muted></video>
+        <video id="remoteVideo" autoplay></video>
+    </div>
+    <div id="waiting">Waiting for doctor to connect...</div>
+    <button id="connectButton">Connect</button>
+
+    <script src="webrtc.js"></script>
+    <script>
+        document.getElementById('connectButton').addEventListener('click', () => {
+            startPatient();
+        });
+    </script>
+</body>
+</html>

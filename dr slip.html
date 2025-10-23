@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Prescription Builder</title>
+</head>
+<body>
+    <h1>Doctor Prescription</h1>
+
+    <!-- Medicine Search -->
+    <div>
+        <label>Search Medicine:</label>
+        <input type="text" id="medicine-input" onkeyup="searchItem(this.value, 'medicine')" />
+        <div id="medicine-list"></div>
+        <ul id="medicine-prescription"></ul>
+    </div>
+
+    <!-- Checkup Search -->
+    <div>
+        <label>Search Checkup:</label>
+        <input type="text" id="checkup-input" onkeyup="searchItem(this.value, 'checkup')" />
+        <div id="checkup-list"></div>
+        <ul id="checkup-prescription"></ul>
+    </div>
+
+    <!-- Generate PDF -->
+    <button onclick="generatePDF()">Generate PDF</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="prescription.js"></script>
+</body>
+</html>

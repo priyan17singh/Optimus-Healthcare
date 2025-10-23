@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Messaging</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .message-box {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .message.patient {
+            background-color: #e1f5fe;
+            text-align: left;
+        }
+
+        .message.patholab {
+            background-color: #dcedc8;
+            text-align: left;
+        }
+
+        .message.doctor {
+            background-color: #ffd180;
+            text-align: left;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-group select, .input-group input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex: 1;
+        }
+
+        .input-group button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .input-group button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-button {
+            padding: 10px 20px;
+            background-color: #f44336;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Doctor Messaging</h2>
+        <div class="message-box" id="message-box">
+            <!-- Messages will be dynamically added here -->
+        </div>
+        <div class="input-group">
+            <input type="text" id="patient-id" placeholder="Enter Patient ID" required>
+            <select id="recipient">
+                <option value="patient">Patient</option>
+                <option value="patholab">Patholab</option>
+            </select>
+            <input type="text" id="message-input" placeholder="Enter your message">
+            <button onclick="sendMessage('doctor')">Send</button>
+        </div>
+        <button class="back-button" onclick="goBack()">Back</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+    <script>
+        const messages = JSON.parse(localStorage.getItem('messages')) || [];
+        const secretKey = 'your-secret-key';
+        const currentUser = 'MRITESH108'; // Current logged-in user
+
+        function displayMessages() {
+            const messageBox = document.getElementById('message-box');
+            messageBox.innerHTML = '';
+            messages.forEach(msg => {
+                const decryptedMessage = CryptoJS.AES.decrypt(msg.text, secretKey).toString(CryptoJS.enc.Utf8);
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', msg.sender);
+                messageDiv.textContent = `${msg.sender.toUpperCase()} to ${msg.recipient.toUpperCase()}: ${decryptedMessage}`;
+                messageBox.appendChild(messageDiv);
+            });
+            messageBox.scrollTop = messageBox.scrollHeight;
+        }
+
+        function sendMessage(sender) {
+            const patientId = document.getElementById('patient-id').value.trim();
+            const recipient = document.getElementById('recipient').value;
+            const messageInput = document.getElementById('message-input');
+            const messageText = messageInput.value.trim();
+
+            if (patientId === '') {
+                alert('Please enter the patient ID.');
+                return;
+            }
+
+            if (messageText === '') {
+                alert('Please enter a message.');
+                return;
+            }
+
+            const encryptedMessage = CryptoJS.AES.encrypt(messageText, secretKey).toString();
+            const newMessage = { sender, recipient, text: encryptedMessage, patientId };
+            messages.push(newMessage);
+            localStorage.setItem('messages', JSON.stringify(messages));
+
+            messageInput.value = '';
+            displayMessages();
+        }
+
+        function goBack() {
+            window.location.href = 'doctorpage1.html';
+        }
+
+        displayMessages();
+    </script>
+</body>
+</html>

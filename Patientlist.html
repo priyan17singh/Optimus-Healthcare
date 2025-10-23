@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPTIMUS HEALTHCARE</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 20px 10px;
+            background: #2c3e50;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            width: 80px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            margin-right: 15px; /* Space between logo and text */
+        }
+
+        header h1 {
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.8;
+            text-align: center;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: #fff;
+            font-size: 0.9em;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            width: 90%;
+            max-width: 1400px;
+            margin: 20px auto;
+            flex-grow: 1;
+        }
+
+        .patient-list {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            width: 20%;
+        }
+
+        .prescription-form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            width: 50%;
+        }
+
+        .prescription-output {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            width: 30%;
+        }
+
+        .patient-list h2, .prescription-form h2, .prescription-output h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .patient-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .patient-list li {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .patient-list li:hover,
+        .patient-list li.selected {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .patient-list li.green {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .prescription-form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .prescription-form input,
+        .prescription-form textarea,
+        .prescription-form select {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .prescription-form button {
+            width: 100%;
+            padding: 15px;
+            background-color: #790e48;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .prescription-form button:hover {
+            background-color: #977b16;
+        }
+
+        .prescription-form .add-button {
+          width: 150px; 
+          padding: 10px;
+          background-color: #28a745;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          font-size: 16px;
+          cursor: pointer;
+          display: block;
+          margin: 20px auto; 
+        }
+
+        .prescription-form .add-button:hover {
+            background-color: #218838;
+        }
+
+
+
+        .prescription-form .remove-button {
+            background-color: #dc3545;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 14px;
+            height: 40px;
+        }
+
+        .prescription-form .remove-button:hover {
+            background-color: #c82333;
+        }
+
+        .prescription-output p {
+            margin-bottom: 10px;
+        }
+        
+        .medication-item {
+    display: flex;
+    margin-top: 2px;
+}
+
+.medication-item select {
+    width: 40%;
+    padding: 5px;
+    height: 40px;
+}
+
+.medication-item input {
+    width: 20%;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.medication-item button {
+    width: 150px;
+    margin-left: 50px;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    height: 40px;
+}
+
+.medication-item button:hover {
+    background-color: #c82333;
+}
+
+        .dosage{
+            margin-left: 10px; margin-right: 10px; margin-bottom: 20px; height: 30px;
+        }
+        #q{
+            
+            padding: 5px;
+        }
+        .remove-button{
+            width: 150px;  margin-bottom: 20px; margin-left: 50px;
+        }   
+
+        .checkup-item {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.checkup-item select {
+    width: 40%;
+    height: 40px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.checkup-item button {
+    width: 150px;
+    height: 40px;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.checkup-item button:hover {
+    background-color: #c82333;
+}
+
+.backjau{
+    background-color: rgb(17, 121, 152);
+    border-radius: 5px;
+    width: 100px;
+    height: 30px;
+    font-size: medium;
+    color: white;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <img src="Projectlogo.jpg" alt="MRITESH108 Healthcare Logo" class="logo">
+        <div>
+            <h1>OPTIMUS HEALTHCARE</h1>
+            <p>Doctor's Prescription Slip</p>
+        </div>
+    </header>
+    <div class="container">
+        <div class="patient-list">
+            <a href="doctorpage1.html">
+            <button class="backjau">back</button>
+            </a>
+            <h2>Patient List</h2>
+            <ul id="patients">
+                <li onclick="selectPatient(this, 'Ajay Chaudhary')">Ajay Chaudhary</li>
+                <li onclick="selectPatient(this, 'Karjan Prajapati')">Karjan Prajapati</li>
+                <li onclick="selectPatient(this, 'Alice Johnson')">Alice Johnson</li>
+                <li onclick="selectPatient(this, 'Subhash Tatkre')">Subhash Tatkare</li>
+                <li onclick="selectPatient(this, 'Mahesh Pathak')">Mahesh Pathak</li>
+                <li onclick="selectPatient(this, 'Ankur Warikoo')">Ankur Warikoo</li>
+                <li onclick="selectPatient(this, 'Monu Mahto')">Monu Mahto</li>
+            </ul>
+        </div>
+        <div class="prescription-form" id="prescription-form">
+            <h2>Doctor's Prescription</h2>
+            <label for="hospital-name">Hospital Name</label>
+            <input type="text" id="hospital-name" style="width: 630px;" value="Optimus Healthcare" disabled>
+            <label for="doctor-name">Doctor's Name</label>
+            <input type="text" id="doctor-name" style="width: 630px;" value="Dr. Priyanshu Singh" disabled>
+            <label for="patient-name">Patient's Name</label>
+            <input type="text" id="patient-name" style="width: 630px;" disabled>
+            <div id="medications">
+                <hr style="height: 2px; background: #2c3e50;"><br>
+                <label>Medications</label>
+                <div class="medication-item">
+                    <select class="medication" id="q" style="padding: 5px;" onchange="updatePrescription()">
+                        <option value="">Select Medication</option>
+                        <option value="Paracetamol">Paracetamol</option>
+                        <option value="Ibuprofen">Ibuprofen</option>
+                        <option value="Amoxicillin">Amoxicillin</option>
+                    </select>
+                    <input type="text" placeholder="Dosage" style="margin-left: 10px; margin-right: 10px; margin-bottom: 20px; height: 30px; " class="dosage" oninput="updatePrescription()">
+                    <button type="button" style="width: 150px;  margin-bottom: 20px; margin-left: 50px;" class="remove-button" onclick="removeItem(this)">Remove</button>
+                </div>
+            </div>
+            <button type="button"  class="add-button" onclick="addMedication()">Add Medication</button>
+            <hr style="height: 2px; background: #2c3e50;"><br>
+            <div id="checkups">
+                <label style="margin-top: 10px;">Checkups</label>
+                <div class="checkup-item">
+                    <select class="checkup" style="padding: 5px;" onchange="updatePrescription()">
+                        <option value="">Select Checkup</option>
+                        <option value="Blood Test">Blood Test</option>
+                        <option value="X-Ray">X-Ray</option>
+                        <option value="MRI">MRI</option>
+                    </select>
+                    <button type="button"  class="remove-button" style="width: 150px;  margin-bottom: 20px; margin-left: 200px;" onclick="removeItem(this)">Remove</button>
+                </div>
+            </div>
+            <button type="button" class="add-button" onclick="addCheckup()">Add Checkup</button>
+            <hr style="height: 2px; background: #2c3e50;"><br>
+            <label for="instructions">Instructions</label>
+            <textarea id="instructions" placeholder="e.g., Take one tablet daily after meals" oninput="updatePrescription()"></textarea>
+            <button type="button" onclick="submitPrescription()">Submit</button>
+        </div>
+        <div class="prescription-output" id="prescription-output">
+            <h2>Prescription</h2>
+            <p><strong>Hospital Name:</strong> <span id="output-hospital-name">Optimus Healthcare</span></p>
+            <p><strong>Doctor's Name:</strong> <span id="output-doctor-name">Dr. Priyanshu Singh</span></p>
+            <p><strong>Patient's Name:</strong> <span id="output-patient-name"></span></p>
+            <div id="output-medications">
+                <p><strong>Medications:</strong></p>
+            </div>
+            <div id="output-checkups">
+                <p><strong>Checkups:</strong></p>
+            </div>
+            <p><strong>Instructions:</strong> <span id="output-instructions"></span></p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 OPTIMUS HEALTHCARE | Doctor's Prescription Application</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const doctorData = JSON.parse(localStorage.getItem('doctor'));
+            if (doctorData) {
+                const doctorNames = {
+                    "452819885248": "Dr. Priyanshu Singh",
+                    "565488782776": "Dr. Ritesh Pandey",
+                    "872701014545": "Dr. Nishant Tripathi"
+                };
+                const doctorName = doctorNames[doctorData.id];
+                document.querySelector('header p').textContent = `${doctorName}'s Prescription Slip`;
+                document.getElementById('doctor-name').value = doctorName;
+                document.getElementById('output-doctor-name').textContent = doctorName;
+            }
+        });
+    
+        function selectPatient(element, patientName) {
+            // Remove 'selected' class from any previously selected patient
+            document.querySelectorAll('.patient-list li').forEach(li => li.classList.remove('selected'));
+    
+            // Add 'selected' class to the clicked patient
+            element.classList.add('selected');
+    
+            // Set the patient name in the form
+            document.getElementById('patient-name').value = patientName;
+    
+            // Display the prescription form and output
+            document.getElementById('prescription-form').style.display = 'block';
+            document.getElementById('prescription-output').style.display = 'block';
+    
+            // Update the prescription output
+            updatePrescription();
+        }
+    
+        function addMedication() {
+            const medicationsDiv = document.getElementById('medications');
+            const newMedicationDiv = document.createElement('div');
+            newMedicationDiv.className = 'medication-item';
+            newMedicationDiv.innerHTML = `
+                <select class="medication" onchange="updatePrescription()">
+                    <option value="">Select Medication</option>
+                    <option value="Paracetamol">Paracetamol</option>
+                    <option value="Ibuprofen">Ibuprofen</option>
+                    <option value="Amoxicillin">Amoxicillin</option>
+                </select>
+                <input type="text" placeholder="Dosage" class="dosage" oninput="updatePrescription()">
+                <button type="button" class="remove-button" onclick="removeItem(this)">Remove</button>
+            `;
+            medicationsDiv.appendChild(newMedicationDiv);
+        }
+    
+        function addCheckup() {
+            const checkupsDiv = document.getElementById('checkups');
+            const newCheckupDiv = document.createElement('div');
+            newCheckupDiv.className = 'checkup-item'; // Use the same class for styling
+    
+            // Add identical markup for the new checkup item
+            newCheckupDiv.innerHTML = `
+                <select class="checkup" style="padding: 5px; width: 40%; height: 40px;" onchange="updatePrescription()">
+                    <option value="">Select Checkup</option>
+                    <option value="Blood Test">Blood Test</option>
+                    <option value="X-Ray">X-Ray</option>
+                    <option value="MRI">MRI</option>
+                </select>
+                <button type="button" class="remove-button" style="width: 150px; margin-bottom: 20px; margin-left: 200px;" onclick="removeItem(this)">Remove</button>
+            `;
+            checkupsDiv.appendChild(newCheckupDiv); // Append the new item
+        }
+    
+        function removeItem(button) {
+            button.parentElement.remove();
+            updatePrescription();
+        }
+    
+        function updatePrescription() {
+            const hospitalName = document.getElementById('hospital-name').value;
+            const doctorName = document.getElementById('doctor-name').value;
+            const patientName = document.getElementById('patient-name').value;
+            const medications = document.querySelectorAll('.medication-item');
+            const checkups = document.querySelectorAll('.checkup-item');
+            const instructions = document.getElementById('instructions').value;
+    
+            document.getElementById('output-hospital-name').innerText = hospitalName;
+            document.getElementById('output-doctor-name').innerText = doctorName;
+            document.getElementById('output-patient-name').innerText = patientName;
+            document.getElementById('output-instructions').innerText = instructions;
+    
+            const medicationsOutput = document.getElementById('output-medications');
+            medicationsOutput.innerHTML = '<p><strong>Medications:</strong></p>';
+            medications.forEach((item, index) => {
+                const medName = item.querySelector('.medication').value;
+                const dosage = item.querySelector('.dosage').value;
+                if (medName && dosage) {
+                    medicationsOutput.innerHTML += `<p>${index + 1}. ${medName} - ${dosage}</p>`;
+                }
+            });
+    
+            const checkupsOutput = document.getElementById('output-checkups');
+            checkupsOutput.innerHTML = '<p><strong>Checkups:</strong></p>';
+            checkups.forEach((item, index) => {
+                const checkupType = item.querySelector('.checkup').value;
+                if (checkupType) {
+                    checkupsOutput.innerHTML += `<p>${index + 1}. ${checkupType}</p>`;
+                }
+            });
+        }
+    
+        function submitPrescription() {
+            const doctorName = document.getElementById('doctor-name').value;
+            const patientName = document.getElementById('patient-name').value;
+            const medications = Array.from(document.querySelectorAll('.medication-item')).map(item => ({
+                name: item.querySelector('.medication').value,
+                dosage: item.querySelector('.dosage').value
+            })).filter(med => med.name && med.dosage);
+            const checkups = Array.from(document.querySelectorAll('.checkup-item')).map(item => item.querySelector('.checkup').value).filter(checkup => checkup);
+            const instructions = document.getElementById('instructions').value;
+            const date = new Date().toISOString().split('T')[0]; // Current date in YYYY-MM-DD format
+    
+            // Create a prescription object
+            const prescription = { doctorName, patientName, medications, checkups, instructions, date };
+    
+            // Get existing history from localStorage
+            const history = JSON.parse(localStorage.getItem('patientHistory')) || [];
+    
+            // Add the new prescription to the history
+            history.push(prescription);
+    
+            // Save the updated history back to localStorage
+            localStorage.setItem('patientHistory', JSON.stringify(history));
+    
+            alert('Prescription Submitted!');
+            const selectedPatient = document.querySelector('.patient-list li.selected');
+            if (selectedPatient) {
+                selectedPatient.classList.add('green');
+            }
+        }
+    </script>
+</body>
+</html>

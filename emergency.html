@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Contact Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            transition: background-color 0.3s;
+        }
+
+        header {
+            padding: 20px 10px;
+            background: #c0392b;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background-color 0.3s;
+        }
+
+        .logo {
+            width: 80px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        .emergency-numbers, .contact-form {
+            margin-bottom: 20px;
+        }
+
+        .emergency-numbers h2, .contact-form h2 {
+            color: #c0392b;
+            margin-bottom: 10px;
+        }
+
+        .emergency-numbers p, .contact-form label {
+            font-size: 1.2em;
+            margin: 5px 0;
+        }
+
+        .emergency-numbers a {
+            color: #c0392b;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .emergency-numbers a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+
+        .contact-form input:focus, .contact-form textarea:focus {
+            border-color: #c0392b;
+            outline: none;
+        }
+
+        .contact-buttons {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .contact-buttons a, .contact-buttons button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #c0392b;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .contact-buttons a:hover, .contact-buttons button:hover {
+            background-color: #a93226;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            font-size: 1em;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+
+        .success-message {
+            display: none;
+            margin-top: 20px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="Projectlogo.jpg" alt="MRITESH108 Healthcare Logo" class="logo">
+        <div>
+            <h1>Emergency Contact Page</h1>
+        </div>
+    </header>
+    <div class="container">
+        <div class="emergency-numbers">
+            <h2>Emergency Numbers</h2>
+            <p>Police: <a href="tel:100">100</a></p>
+            <p>Fire: <a href="tel:101">101</a></p>
+            <p>Ambulance: <a href="tel:102">102</a></p>
+        </div>
+        <div class="contact-form">
+            <h2>Contact Us</h2>
+            <form id="contactForm">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" name="phone" required>
+
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+
+                <div class="contact-buttons">
+                    <a href="tel:1234567890">Call Us</a>
+                    <button type="submit">Submit</button>
+                    <a href="sms:1234567890">Send SMS</a>
+                </div>
+            </form>
+            <div class="success-message" id="successMessage">Your message has been sent successfully!</div>
+        </div>
+        <a href="index.html" class="back-button">Back to Main Page</a>
+    </div>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            // Show success message
+            document.getElementById('successMessage').style.display = 'block';
+            // Clear the form
+            event.target.reset();
+        });
+    </script>
+</body>
+</html>

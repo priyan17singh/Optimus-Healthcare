@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPTIMUS HEALTHCARE</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            text-align: center;
+            flex: 1;
+        }
+
+        header {
+            padding: 20px 10px;
+            background: #2c3e50;
+            color: #fff;
+        }
+
+        .header-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .header-logo {
+            width: 80px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+        }
+
+        .header-text h1 {
+            margin-bottom: 5px;
+        }
+
+        .header-text p {
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+
+        /* Navigation Container */
+        .nav-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 50px 10px;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .card {
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 200px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            width: 60px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .card p {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        /* Common class for uniform size */
+        .uniform-size {
+            width: 200px;
+            height: 300px; /* Adjust height as needed */
+        }
+
+        footer {
+            padding: 10px 20px;
+            background: #2c3e50;
+            color: #fff;
+            font-size: 0.9em;
+            text-align: center;
+            margin-top: auto;
+            width: 100%;
+        }
+
+        /* Back Button Styling */
+        .back-button {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            font-size: 1em;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Chatbot Button Styling */
+        .chatbot-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #2ecc71;
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 1em;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .chatbot-button:hover {
+            background-color: #27ae60;
+            transform: translateY(-3px);
+        }
+
+        /* Chatbot Styling */
+        #chatbot-container {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 300px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        #chatbot-header {
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            position: relative;
+        }
+
+        #chatbot-header button {
+            position: absolute;
+            right: 10px;
+            top: 5px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        #chatbot-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            background-color: #f9f9f9;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        #chatbot-body p {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #e8f5e9;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        #chatbot-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            background: #fff;
+        }
+
+        #chatbot-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #chatbot-input button {
+            margin-left: 5px;
+            padding: 8px 10px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #chatbot-input button:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-logo-container">
+            <img src="Projectlogo.jpg" alt="Project Logo" class="header-logo">
+            <div class="header-text">
+                <h1>OPTIMUS HEALTHCARE</h1>
+                <p id="headerGreeting">Patient's appointments & History with Medit!</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Section -->
+    <div class="nav-container">
+        <a href="Patienthospitalappointments.html" style="text-decoration: none;">
+            <div class="card uniform-size">
+                <img src="hospitallogo.jpg" alt="Patient Icon">
+                <h3>Hospital</h3>
+                <p>Book appointments, choose available time & date slot.</p>
+            </div>
+        </a>
+
+        <a href="bookpatholab.html" style="text-decoration: none;">
+        <div class="card uniform-size">
+            <img src="https://img.icons8.com/ios/50/f39c12/test-tube.png" alt="Patholab Icon">
+            <h3>Patholab</h3>
+            <p>Book appointments.</p>
+        </div>
+        </a>
+
+        <a href="patienthistory.html" style="text-decoration: none;">
+        <div class="card uniform-size">
+            <img src="patienthistory.png" alt="Doctor Icon">
+            <h3>History</h3>
+            <p>See your history.</p>
+        </div>
+        </a>
+
+        <a href="patientmessage1.html" style="text-decoration: none;">
+        <div class="card uniform-size">
+            <img src="hospitalmessage.png" alt="Emergency Icon">
+            <h3>Message</h3>
+            <p>Notification & Messages from Hospitals and Patholab.</p>
+        </div>
+        </a>
+
+        <a href="patienttelemedicine.html" style="text-decoration: none;">
+        <div class="card uniform-size">
+            <img src="telemedicinelogo.jpg" alt="Blood Bank Icon">
+            <h3>Telemedicine</h3>
+            <p>Connect with your doctors virtually.</p>
+        </div>
+    </a>
+    </div>
+
+    <!-- Back Button -->
+    <a href="index.html" class="back-button">Back</a>
+
+    <!-- Chatbot Button -->
+    <button class="chatbot-button" onclick="toggleChatbot()">Medit!</button>
+
+    <!-- Chatbot Container -->
+    <div id="chatbot-container">
+        <div id="chatbot-header">
+            <span>Medit Chatbot</span>
+            <button onclick="toggleChatbot()">×</button>
+        </div>
+        <div id="chatbot-body"></div>
+        <div id="chatbot-input">
+            <input type="text" id="chatbot-user-input" placeholder="Ask your health query...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2024 OPTIMUS HEALTHCARE | All Rights Reserved  
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loggedInUser = localStorage.getItem('user');
+            if (loggedInUser) {
+                document.getElementById('headerGreeting').textContent = `${loggedInUser}'s appointments & History with Medit!`;
+            }
+        });
+
+        const chatbotContainer = document.getElementById("chatbot-container");
+        const chatbotBody = document.getElementById("chatbot-body");
+        const userInput = document.getElementById("chatbot-user-input");
+
+        function toggleChatbot() {
+            const isVisible = chatbotContainer.style.display === "flex";
+            chatbotContainer.style.display = isVisible ? "none" : "flex";
+        }
+
+        function sendMessage() {
+            const userMessage = userInput.value.trim();
+            if (!userMessage) return;
+
+            appendMessage("You", userMessage);
+
+            const response = getResponse(userMessage.toLowerCase());
+            setTimeout(() => appendMessage("Medit", response), 500);
+
+            userInput.value = "";
+        }
+
+        function appendMessage(sender, message) {
+            const messageElement = document.createElement("p");
+            messageElement.textContent = `${sender}: ${message}`;
+            chatbotBody.appendChild(messageElement);
+            chatbotBody.scrollTop = chatbotBody.scrollHeight;
+        }
+
+        function getResponse(query) {
+            const responses = {
+    "hi": "Hello! How can I assist you today?",
+    "hello": "Hi there! How can I help you?",
+    "how are you": "I'm just a chatbot, but I'm here to help you!",
+    "i want some advises": "Yeah, Feel free to ask. I am to help you.",
+    "suggest me a better hospital": "Every hospital registered on this plattform are best. You can visit any hospital but i will suggest to visit to OPTIMUS HEALTHCARE.",
+    "good morning": "Good morning! How can I assist you today?",
+    "good afternoon": "Good afternoon! How can I help you today?",
+    "good evening": "Good evening! How can I assist you today?",
+    "thank you": "You're welcome! If you have any other questions, feel free to ask.",
+    "thanks": "You're welcome! How else can I assist you?",
+    "bye": "Goodbye! Have a great day!",
+    "headache": "For headache, consult Neurology.",
+    "fever": "For fever, consult General Medicine.",
+    "stomach pain": "For stomach pain, consult Gastroenterology.",
+    "chest pain": "For chest pain, consult Cardiology.",
+    "skin rash": "For skin rash, consult Dermatology.",
+    "back pain": "For back pain, consult Orthopedics.",
+    "vision issues": "For vision issues, consult Ophthalmology.",
+    "diabetes": "For diabetes, consult Endocrinology.",
+    "ear pain": "For ear pain, consult ENT.",
+    "toothache": "For toothache, consult Dentistry.",
+    "asthma": "For asthma, consult Pulmonology.",
+    "allergies": "For allergies, consult Immunology.",
+    "burns": "For burns, consult Emergency Services.",
+    "pregnancy": "For pregnancy, consult Obstetrics.",
+    "heart issues": "For heart issues, consult Cardiology.",
+    "mental health": "For mental health, consult Psychiatry.",
+    "broken bone": "For broken bones, consult Orthopedics.",
+    "arthritis": "For arthritis, consult Rheumatology.",
+    "liver issues": "For liver issues, consult Hepatology.",
+    "kidney problems": "For kidney problems, consult Nephrology.",
+    "prostate issues": "For prostate issues, consult Urology.",
+    "thyroid problems": "For thyroid problems, consult Endocrinology.",
+    "high blood pressure": "For high blood pressure, consult Cardiology.",
+    "low blood pressure": "For low blood pressure, consult General Medicine.",
+    "depression": "For depression, consult Psychiatry.",
+    "anxiety": "For anxiety, consult Psychiatry.",
+    "obesity": "For obesity, consult Nutrition and Dietetics.",
+    "cold and flu": "For cold and flu, consult General Medicine.",
+    "injury": "For injuries, consult Trauma Care.",
+    "insomnia": "For insomnia, consult Sleep Medicine.",
+    "joint pain": "For joint pain, consult Rheumatology.",
+    "constipation": "For constipation, consult Gastroenterology.",
+    "migraine": "For migraines, consult Neurology.",
+    "urinary issues": "For urinary issues, consult Urology.",
+    "sinusitis": "For sinusitis, consult ENT.",
+    "bronchitis": "For bronchitis, consult Pulmonology.",
+    "chronic pain": "For chronic pain, consult Pain Management.",
+    "dizziness": "For dizziness, consult Neurology.",
+    "epilepsy": "For epilepsy, consult Neurology.",
+    "gallstones": "For gallstones, consult Gastroenterology.",
+    "gastritis": "For gastritis, consult Gastroenterology.",
+    "hepatitis": "For hepatitis, consult Hepatology.",
+    "hypertension": "For hypertension, consult Cardiology.",
+    "hypotension": "For hypotension, consult General Medicine.",
+    "influenza": "For influenza, consult General Medicine.",
+    "irritable bowel syndrome": "For irritable bowel syndrome, consult Gastroenterology.",
+    "meningitis": "For meningitis, consult Neurology.",
+    "multiple sclerosis": "For multiple sclerosis, consult Neurology.",
+    "osteoporosis": "For osteoporosis, consult Rheumatology.",
+    "panic attacks": "For panic attacks, consult Psychiatry.",
+    "parkinson's disease": "For Parkinson's disease, consult Neurology.",
+    "pneumonia": "For pneumonia, consult Pulmonology.",
+    "psoriasis": "For psoriasis, consult Dermatology.",
+    "rheumatoid arthritis": "For rheumatoid arthritis, consult Rheumatology.",
+    "sciatica": "For sciatica, consult Orthopedics.",
+    "seizures": "For seizures, consult Neurology.",
+    "sleep apnea": "For sleep apnea, consult Sleep Medicine.",
+    "stroke": "For stroke, consult Neurology.",
+    "tuberculosis": "For tuberculosis, consult Pulmonology.",
+    "ulcerative colitis": "For ulcerative colitis, consult Gastroenterology.",
+    "varicose veins": "For varicose veins, consult Vascular Surgery.",
+    "vertigo": "For vertigo, consult Neurology.",
+    "appendicitis": "For appendicitis, consult General Surgery.",
+    "autoimmune diseases": "For autoimmune diseases, consult Immunology.",
+    "bladder infection": "For bladder infection, consult Urology.",
+    "blood clot": "For blood clot, consult Hematology.",
+    "bone fracture": "For bone fracture, consult Orthopedics.",
+    "breast cancer": "For breast cancer, consult Oncology.",
+    "bronchiectasis": "For bronchiectasis, consult Pulmonology.",
+    "candidiasis": "For candidiasis, consult Infectious Disease.",
+    "cataracts": "For cataracts, consult Ophthalmology.",
+    "celiac disease": "For celiac disease, consult Gastroenterology.",
+    "cervical cancer": "For cervical cancer, consult Oncology.",
+    "chickenpox": "For chickenpox, consult Infectious Disease.",
+    "cholera": "For cholera, consult Infectious Disease.",
+    "chronic fatigue syndrome": "For chronic fatigue syndrome, consult Rheumatology.",
+    "cirrhosis": "For cirrhosis, consult Hepatology.",
+    "colitis": "For colitis, consult Gastroenterology.",
+    "concussion": "For concussion, consult Neurology.",
+    "conjunctivitis": "For conjunctivitis, consult Ophthalmology.",
+    "cystic fibrosis": "For cystic fibrosis, consult Pulmonology.",
+    "dengue fever": "For dengue fever, consult Infectious Disease.",
+    "dermatitis": "For dermatitis, consult Dermatology.",
+    "diverticulitis": "For diverticulitis, consult Gastroenterology.",
+    "eczema": "For eczema, consult Dermatology.",
+    "endometriosis": "For endometriosis, consult Gynecology.",
+    "emphysema": "For emphysema, consult Pulmonology.",
+    "fibromyalgia": "For fibromyalgia, consult Rheumatology.",
+    "gastroesophageal reflux disease": "For gastroesophageal reflux disease, consult Gastroenterology.",
+    "glaucoma": "For glaucoma, consult Ophthalmology.",
+    "goiter": "For goiter, consult Endocrinology.",
+    "gout": "For gout, consult Rheumatology.",
+    "guillain-barre syndrome": "For Guillain-Barre syndrome, consult Neurology.",
+    "hemophilia": "For hemophilia, consult Hematology.",
+    "herpes": "For herpes, consult Infectious Disease.",
+    "hiv/aids": "For HIV/AIDS, consult Infectious Disease.",
+    "huntington's disease": "For Huntington's disease, consult Neurology.",
+    "hyperthyroidism": "For hyperthyroidism, consult Endocrinology.",
+    "hypothyroidism": "For hypothyroidism, consult Endocrinology.",
+    "impetigo": "For impetigo, consult Dermatology.",
+    "inflammatory bowel disease": "For inflammatory bowel disease, consult Gastroenterology.",
+    "jaundice": "For jaundice, consult Hepatology.",
+    "kidney stones": "For kidney stones, consult Urology.",
+    "leukemia": "For leukemia, consult Oncology.",
+    "lupus": "For lupus, consult Rheumatology.",
+    "lyme disease": "For Lyme disease, consult Infectious Disease.",
+    "malaria": "For malaria, consult Infectious Disease.",
+    "measles": "For measles, consult Infectious Disease.",
+    "melanoma": "For melanoma, consult Dermatology.",
+    "mumps": "For mumps, consult Infectious Disease.",
+    "muscular dystrophy": "For muscular dystrophy, consult Neurology.",
+    "nephrotic syndrome": "For nephrotic syndrome, consult Nephrology.",
+    "pancreatitis": "For pancreatitis, consult Gastroenterology.",
+    "parathyroid disease": "For parathyroid disease, consult Endocrinology.",
+    "peripheral neuropathy": "For peripheral neuropathy, consult Neurology.",
+    "pneumothorax": "For pneumothorax, consult Pulmonology.",
+    "polycystic ovary syndrome": "For polycystic ovary syndrome, consult Gynecology.",
+    "pulmonary edema": "For pulmonary edema, consult Pulmonology.",
+    "rabies": "For rabies, consult Infectious Disease.",
+    "raynaud's disease": "For Raynaud's disease, consult Rheumatology.",
+    "renal failure": "For renal failure, consult Nephrology.",
+    "retinitis pigmentosa": "For retinitis pigmentosa, consult Ophthalmology.",
+    "rickets": "For rickets, consult Pediatrics.",
+    "rosacea": "For rosacea, consult Dermatology.",
+    "sarcoidosis": "For sarcoidosis, consult Pulmonology.",
+    "scleroderma": "For scleroderma, consult Rheumatology.",
+    "shingles": "For shingles, consult Infectious Disease.",
+    "sickle cell disease": "For sickle cell disease, consult Hematology.",
+    "syphilis": "For syphilis, consult Infectious Disease.",
+    "tetanus": "For tetanus, consult Infectious Disease.",
+    "thyroid cancer": "For thyroid cancer, consult Oncology.",
+    "trigeminal neuralgia": "For trigeminal neuralgia, consult Neurology.",
+    "whooping cough": "For whooping cough, consult Infectious Disease.",
+    "wilson's disease": "For Wilson's disease, consult Hepatology.",
+    "yellow fever": "For yellow fever, consult Infectious Disease.",
+    "default": "I'm here to help! Please specify your query for better guidance."
+};
+            return responses[query] || responses["default"];
+        }
+    </script>
+</body>
+</html>

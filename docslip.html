@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor's Prescription Slip</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .prescription-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+        .prescription-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .prescription-form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .prescription-form input,
+        .prescription-form textarea,
+        .prescription-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .prescription-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .prescription-form button:hover {
+            background-color: #0056b3;
+        }
+        .prescription-form .add-button {
+            background-color: #28a745;
+        }
+        .prescription-form .add-button:hover {
+            background-color: #218838;
+        }
+        .prescription-form .remove-button {
+            background-color: #dc3545;
+        }
+        .prescription-form .remove-button:hover {
+            background-color: #c82333;
+        }
+        .prescription-output {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+        }
+        .medication-item, .checkup-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .medication-item select, .checkup-item select {
+            width: 70%;
+        }
+    </style>
+</head>
+<body>
+    <div class="prescription-form">
+        <h2>Doctor's Prescription</h2>
+        <label for="doctor-name">Doctor's Name</label>
+        <input type="text" id="doctor-name" value="Dr. John Doe" disabled>
+
+        <label for="patient-name">Patient's Name</label>
+        <select id="patient-name">
+            <option value="">Select Patient</option>
+            <option value="Jane Doe">Jane Doe</option>
+            <option value="John Smith">John Smith</option>
+            <option value="Alice Johnson">Alice Johnson</option>
+        </select>
+
+        <div id="medications">
+            <label>Medications</label>
+            <div class="medication-item">
+                <select class="medication">
+                    <option value="">Select Medication</option>
+                    <option value="Paracetamol">Paracetamol</option>
+                    <option value="Ibuprofen">Ibuprofen</option>
+                    <option value="Amoxicillin">Amoxicillin</option>
+                </select>
+                <input type="text" placeholder="Dosage" class="dosage">
+                <button type="button" class="remove-button" onclick="removeItem(this)">Remove</button>
+            </div>
+        </div>
+        <button type="button" class="add-button" onclick="addMedication()">Add Medication</button>
+
+        <div id="checkups">
+            <label>Checkups</label>
+            <div class="checkup-item">
+                <select class="checkup">
+                    <option value="">Select Checkup</option>
+                    <option value="Blood Test">Blood Test</option>
+                    <option value="X-Ray">X-Ray</option>
+                    <option value="MRI">MRI</option>
+                </select>
+                <button type="button" class="remove-button" onclick="removeItem(this)">Remove</button>
+            </div>
+        </div>
+        <button type="button" class="add-button" onclick="addCheckup()">Add Checkup</button>
+
+        <label for="instructions">Instructions</label>
+        <textarea id="instructions" placeholder="e.g., Take one tablet daily after meals"></textarea>
+
+        <button onclick="generatePrescription()">Generate Prescription</button>
+    </div>
+
+    <div class="prescription-output" id="prescription-output" style="display: none;">
+        <h2>Prescription</h2>
+        <p><strong>Doctor's Name:</strong> <span id="output-doctor-name"></span></p>
+        <p><strong>Patient's Name:</strong> <span id="output-patient-name"></span></p>
+        <div id="output-medications"></div>
+        <div id="output-checkups"></div>
+        <p><strong>Instructions:</strong> <span id="output-instructions"></span></p>
+    </div>
+
+    <script>
+        function addMedication() {
+            const medicationsDiv = document.getElementById('medications');
+            const newMedicationDiv = document.createElement('div');
+            newMedicationDiv.className = 'medication-item';
+            newMedicationDiv.innerHTML = `
+                <select class="medication">
+                    <option value="">Select Medication</option>
+                    <option value="Paracetamol">Paracetamol</option>
+                    <option value="Ibuprofen">Ibuprofen</option>
+                    <option value="Amoxicillin">Amoxicillin</option>
+                </select>
+                <input type="text" placeholder="Dosage" class="dosage">
+                <button type="button" class="remove-button" onclick="removeItem(this)">Remove</button>
+            `;
+            medicationsDiv.appendChild(newMedicationDiv);
+        }
+
+        function addCheckup() {
+            const checkupsDiv = document.getElementById('checkups');
+            const newCheckupDiv = document.createElement('div');
+            newCheckupDiv.className = 'checkup-item';
+            newCheckupDiv.innerHTML = `
+                <select class="checkup">
+                    <option value="">Select Checkup</option>
+                    <option value="Blood Test">Blood Test</option>
+                    <option value="X-Ray">X-Ray</option>
+                    <option value="MRI">MRI</option>
+                </select>
+                <button type="button" class="remove-button" onclick="removeItem(this)">Remove</button>
+            `;
+            checkupsDiv.appendChild(newCheckupDiv);
+        }
+
+        function removeItem(button) {
+            button.parentElement.remove();
+        }
+
+        function generatePrescription() {
+            const doctorName = document.getElementById('doctor-name').value;
+            const patientName = document.getElementById('patient-name').value;
+            const medications = document.querySelectorAll('.medication-item');
+            const checkups = document.querySelectorAll('.checkup-item');
+            const instructions = document.getElementById('instructions').value;
+
+            if (doctorName && patientName && instructions) {
+                document.getElementById('output-doctor-name').innerText = doctorName;
+                document.getElementById('output-patient-name').innerText = patientName;
+                document.getElementById('output-instructions').innerText = instructions;
+
+                const medicationsOutput = document.getElementById('output-medications');
+                medicationsOutput.innerHTML = '<p><strong>Medications:</strong></p>';
+                medications.forEach((item, index) => {
+                    const medName = item.querySelector('.medication').value;
+                    const dosage = item.querySelector('.dosage').value;
+                    if (medName && dosage) {
+                        medicationsOutput.innerHTML += `
+                            <p>${index + 1}. ${medName} - ${dosage}</p>
+                        `;
+                    }
+                });
+
+                const checkupsOutput = document.getElementById('output-checkups');
+                checkupsOutput.innerHTML = '<p><strong>Checkups:</strong></p>';
+                checkups.forEach((item, index) => {
+                    const checkupType = item.querySelector('.checkup').value;
+                    if (checkupType) {
+                        checkupsOutput.innerHTML += `
+                            <p>${index + 1}. ${checkupType}</p>
+                        `;
+                    }
+                });
+
+                document.getElementById('prescription-output').style.display = 'block';
+            } else {
+                alert('Please fill out all required fields.');
+            }
+        }
+    </script>
+</body>
+</html>

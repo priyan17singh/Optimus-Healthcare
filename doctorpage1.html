@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPTIMUS HEALTHCARE</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            text-align: center;
+            flex: 1;
+        }
+
+        header {
+            padding: 20px 10px;
+            background: #2c3e50;
+            color: #fff;
+        }
+
+        .header-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .header-logo {
+            width: 80px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+        }
+
+        .header-text h1 {
+            margin-bottom: 5px;
+        }
+
+        .header-text p {
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+
+        /* Navigation Container */
+        .nav-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 50px 10px;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .card {
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 200px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            width: 60px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .card p {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        /* Common class for uniform size */
+        .uniform-size {
+            width: 200px;
+            height: 300px; /* Adjust height as needed */
+        }
+
+        footer {
+            padding: 10px 20px;
+            background: #2c3e50;
+            color: #fff;
+            font-size: 0.9em;
+            text-align: center;
+            margin-top: auto;
+            width: 100%;
+        }
+
+        /* Back Button Styling */
+        .back-button {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            font-size: 1em;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-logo-container">
+            <img src="Projectlogo.jpg" alt="Project Logo" class="header-logo">
+            <div class="header-text">
+                <h1>OPTIMUS HEALTHCARE</h1>
+                <p id="headerGreeting">Welcome Doctors! Patient's appointments & History</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Section -->
+    <div class="nav-container">
+        <a href="Patientlist.html" style="text-decoration: none;">
+            <div class="card uniform-size">
+                <img src="hospitallogo.jpg" alt="Patient Icon">
+                <h3>Patient's List</h3>
+                <p>Today's appointments.</p>
+            </div>
+        </a>
+
+        <a href="1.html" style="text-decoration: none;">
+        <div class="card uniform-size">
+            <img src="https://img.icons8.com/ios/50/f39c12/test-tube.png" alt="Patholab Icon">
+            <h3>Patient's Patholab Report</h3>
+            <p>See Patient's Lab Report.</p>
+        </div>
+      </a>
+
+      <a href="2.html" style="text-decoration: none;">
+        <div class="card uniform-size">
+            <img src="patienthistory.png" alt="Doctor Icon">
+            <h3>Patient's History</h3>
+            <p>See Patient's history.</p>
+        </div>
+    </a>
+
+    <a href="doctormessage1.html" style="text-decoration: none;">
+        <div class="card uniform-size">
+            <img src="hospitalmessage.png" alt="Emergency Icon">
+            <h3>Message</h3>
+            <p>Notification & Messages from Patients and Patholabs.</p>
+        </div>
+    </a>
+
+        <a href="doctortelemedicine.html" style="text-decoration: none;">
+        <div class="card uniform-size">
+            <img src="telemedicinelogo.jpg" alt="Blood Bank Icon">
+            <h3>Telemedicine</h3>
+            <p>Connect with your patients virtually.</p>
+        </div>
+    </a>
+    </div>
+
+    <!-- Back Button -->
+    <a href="index.html" class="back-button">Back</a>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2024 OPTIMUS HEALTHCARE | All Rights Reserved  
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const doctorData = JSON.parse(localStorage.getItem('doctor'));
+            if (doctorData) {
+                const doctorNames = {
+                    "452819885248": "Dr. Priyanshu Singh",
+                    "565488782776": "Dr. Ritesh Pandey",
+                    "872701014545": "Dr. Nishant Tripathi"
+                };
+                const doctorName = doctorNames[doctorData.id];
+                document.getElementById('headerGreeting').textContent = `Welcome ${doctorName}! Patient's appointments & History`;
+            }
+        });
+    </script>
+</body>
+</html>

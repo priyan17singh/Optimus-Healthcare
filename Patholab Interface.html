@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPTIMUS HEALTHCARE</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensures body takes full height */
+        }
+        h1 {
+            background-color: #2c3e50; /* Updated heading color */
+            color: white;
+            padding: 10px;
+            text-align: center;
+            margin: 0;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            flex-grow: 1; /* Ensures content area expands to take up available space */
+        }
+        .patient-list, .patient-details {
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 20px; /* Increased padding to make the patient layout larger */
+            background: white;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 18px; /* Increased font size */
+        }
+        li.submitted {
+            background-color: #28a745; /* Green background for submitted reports */
+            color: white;
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        button, label.upload-btn {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        button:hover, label.upload-btn:hover {
+            background-color: #0056b3;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .success-message, .loading-message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .success-message {
+            color: green;
+        }
+        .loading-message {
+            color: orange;
+        }
+        .back-btn, .message-btn {
+            margin-top: 10px;
+            display: inline-block;
+            color: white;
+            background-color: #6c757d;
+            padding: 2px 5px; /* Smaller padding */
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px; /* Increased font size */
+        }
+        .message-btn {
+            background-color: #631057;
+        }
+        .message-btn:hover {
+            background-color: #0056b3;
+        }
+        .back-btn:hover {
+            background-color: #5a6268;
+        }
+        #patient-details-container {
+            width: 350px;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 20px;
+            max-width: 100%; /* Default width */
+            transition: max-width 0.3s ease-in-out; /* Smooth transition */
+        }
+        #patient-details-container.wide {
+            max-width: 1000px; /* Wider layout when opened */
+        }
+        #patient-details-container p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        #patient-list-container {
+            margin-bottom: 20px;
+        }
+        .footer {
+            background-color: #2c3e50; /* Same as the heading color */
+            color: white;
+            padding: 10px 0;
+            font-size: 12px;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: auto;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Dr. Herolal Pathology Lab</h1>
+    <div class="container">
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="index.html" class="back-btn" id="home-back-btn">← Back to Home</a>
+            <a href="patholabmessage1.html" class="message-btn">Message Patholab</a>
+        </div>
+
+        <!-- Patient List -->
+        <div id="patient-list-container" class="patient-list">
+            <h2>Patient Appointments</h2>
+            <ul id="patient-list"></ul>
+        </div>
+
+        <!-- Patient Details and Report Update -->
+        <div id="patient-details-container" class="patient-details" style="display: none;">
+            <a href="#" id="back-btn" class="back-btn">← Back to Patient List</a>
+            <h2>Patient Details</h2>
+            <div id="patient-details"></div>
+            <div>
+                <label for="report" id="upload-label" class="upload-btn">Upload Report</label>
+                <input type="file" id="report" accept="application/pdf">
+                <button id="submit-btn" style="display: none;">Submit Report</button>
+                <div id="loading-message" class="loading-message" style="display: none;">Submitting...</div>
+                <div id="success-message" class="success-message" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Text -->
+    <div class="footer">
+        <p>&copy; OPTIMUS HEALTHCARE | All rights reserved.</p>
+    </div>
+
+    <script>
+        const patientListContainer = document.getElementById('patient-list-container');
+        const patientDetailsContainer = document.getElementById('patient-details-container');
+        const patientList = document.getElementById('patient-list');
+        const patientDetails = document.getElementById('patient-details');
+        const reportInput = document.getElementById('report');
+        const submitButton = document.getElementById('submit-btn');
+        const successMessage = document.getElementById('success-message');
+        const loadingMessage = document.getElementById('loading-message');
+        const uploadLabel = document.getElementById('upload-label');
+        const backButton = document.getElementById('back-btn');
+        const homeBackButton = document.getElementById('home-back-btn');
+
+        let patients = [
+            { id: 1, name: 'Praveen Chopan', age: 45, appointment_date: '2024-06-12', reportSubmitted: false, OID: 'OID001' },
+            { id: 2, name: 'Nitesh Baukan', age: 39, appointment_date: '2024-06-13', reportSubmitted: false, OID: 'OID002' },
+            { id: 3, name: 'Atul Tedha', age: 52, appointment_date: '2024-06-14', reportSubmitted: false, OID: 'OID003' },
+            { id: 4, name: 'Pramod Mahan', age: 28, appointment_date: '2024-06-15', reportSubmitted: false, OID: 'OID004' },
+            { id: 5, name: 'Mantharaa Devi', age: 33, appointment_date: '2024-06-16', reportSubmitted: false, OID: 'OID005' },
+            { id: 6, name: 'Gangu Devi', age: 41, appointment_date: '2024-06-17', reportSubmitted: false, OID: 'OID006' }
+        ];
+        let selectedPatient = null;
+
+        // Load Patient List
+        function loadPatientList() {
+            patientList.innerHTML = ''; // Clear existing list
+            patients.forEach(patient => {
+                const listItem = document.createElement('li');
+                listItem.classList.toggle('submitted', patient.reportSubmitted); // Add 'submitted' class if the report is submitted
+                listItem.innerHTML = `
+                    <a href="#" data-id="${patient.id}">${patient.name}</a> 
+                    - Appointment: ${patient.appointment_date}
+                `;
+                patientList.appendChild(listItem);
+            });
+        }
+
+        // Load Patient Details
+        function loadPatientDetails(patientId) {
+            selectedPatient = patients.find(patient => patient.id == patientId);
+
+            if (selectedPatient) {
+                patientDetails.innerHTML = `
+                    <p><strong>OID:</strong> ${selectedPatient.OID}</p> <!-- Added OID -->
+                    <p><strong>Name:</strong> ${selectedPatient.name}</p>
+                    <p><strong>Age:</strong> ${selectedPatient.age}</p>
+                    <p><strong>Appointment:</strong> ${selectedPatient.appointment_date}</p>
+                `;
+                submitButton.style.display = 'none';
+                successMessage.style.display = 'none';
+                loadingMessage.style.display = 'none';
+                uploadLabel.textContent = 'Upload Report';
+                reportInput.value = '';
+
+                patientListContainer.style.display = 'none';
+                patientDetailsContainer.style.display = 'block';
+                patientDetailsContainer.classList.add('wide'); // Apply wider layout
+                homeBackButton.style.display = 'none'; // Hide home back button
+            }
+        }
+
+        // Show Submit Button After Report Selection and Change Button Text
+        reportInput.addEventListener('change', () => {
+            if (reportInput.files.length > 0) {
+                uploadLabel.textContent = reportInput.files[0].name; // Show file name
+                submitButton.style.display = 'inline-block';
+                loadingMessage.style.display = 'none';  // Hide loading message
+                successMessage.style.display = 'none';  // Hide success message
+            }
+        });
+
+        // Handle Submit
+        submitButton.addEventListener('click', () => {
+            submitButton.style.display = 'none';
+            loadingMessage.style.display = 'block'; // Show "Submitting..." message
+            setTimeout(() => {
+                selectedPatient.reportSubmitted = true; // Mark report as submitted
+                loadingMessage.style.display = 'none';
+                successMessage.textContent = "Report Submitted Successfully!";
+                successMessage.style.display = 'block';
+                loadPatientList(); // Refresh the patient list to show the updated status
+            }, 2000); // Simulating delay for submission
+        });
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', loadPatientList);
+        patientList.addEventListener('click', event => {
+            const patientId = event.target.closest('a')?.dataset.id;
+            if (patientId) {
+                loadPatientDetails(patientId);
+            }
+        });
+        backButton.addEventListener('click', () => {
+            patientDetailsContainer.classList.remove('wide'); // Remove the wide class when going back
+            patientDetailsContainer.style.display = 'none';
+            patientListContainer.style.display = 'block';
+            homeBackButton.style.display = 'inline-block'; // Show home back button
+        });
+    </script>
+
+</body>
+</html>

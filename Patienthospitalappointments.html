@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPTIMUS HEALTHCARE</title>
+    <style>
+        /* (Your existing styles) */
+       
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        header {
+            background-color: #2c3e50;
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+            font-size: 1.5rem;
+        }
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 2rem auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            overflow: hidden;
+        }
+        h2 {
+            color: #0078D7;
+            margin-bottom: 1rem;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #0078D7;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #005EA6;
+        }
+        .error {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        th {
+            background-color: #0078D7;
+            color: #fff;
+        }
+        .back-button {
+            background-color: #f44336;
+            color: white;
+            padding: 0.5rem 1rem;
+            margin-top: 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            width: auto;
+            transition: background-color 0.3s ease;
+        }
+        .back-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Patient Appointment Booking
+    </header>
+    <div class="container">
+        <button class="back-button" onclick="window.location.href='patientpage1.html'">Back to Patient Page</button>
+
+        <section>
+            <h2>Book Appointment</h2>
+            <form id="appointment-form">
+                <label for="state">Select State</label>
+                <select id="state" onchange="loadDistricts()" required>
+                    <option value="" disabled selected>Choose a State</option>
+                </select>
+
+                <label for="district">Select District</label>
+                <select id="district" onchange="loadHospitals()" required>
+                    <option value="" disabled selected>Choose a District</option>
+                </select>
+
+                <label for="hospital">Select Hospital</label>
+                <select id="hospital" onchange="loadDepartments()" required>
+                    <option value="" disabled selected>Choose a Hospital</option>
+                </select>
+
+                <label for="department">Select Department</label>
+                <select id="department" required>
+                    <option value="" disabled selected>Choose a Department</option>
+                </select>
+
+                <label for="appointment-type">Type of Appointment</label>
+                <select id="appointment-type" onchange="updateCharges()" required>
+                    <option value="" disabled selected>Select Appointment Type</option>
+                    <option value="opd">OPD</option>
+                    <option value="telemedicine">Telemedicine</option>
+                </select>
+
+                <p id="charges-preview">Charges: Not Selected</p>
+
+                <label for="date">Select Date</label>
+                <input type="date" id="date" required>
+
+                <label for="time">Select Time</label>
+                <input type="time" id="time" required>
+
+                <p id="error-message" class="error" style="display: none;"></p>
+
+                <button type="button" onclick="checkAvailability()">Book Appointment</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>View Appointment History</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>State</th>
+                        <th>District</th>
+                        <th>Hospital</th>
+                        <th>Department</th>
+                        <th>Type</th>
+                        <th>Charges</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="history-body">
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script>
+        const appointmentCharges = {
+            opd: 500,
+            telemedicine: 300
+        };
+
+        const statesAndDistricts = {
+            "Uttar Pradesh": ["Lucknow", "Varanasi","Mirzapur","Gorakhpur", "Kanpur", "Agra", "Prayagraj"],
+            "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik"],
+            "Karnataka": ["Bangalore", "Mysore", "Hubli", "Mangalore", "Belgaum"],
+            "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem"],
+            "West Bengal": ["Kolkata", "Durgapur", "Siliguri", "Asansol", "Darjeeling"],
+            "Bihar": ["Patna", "Siwan", "Gaya", "Bhagalpur", "Muzaffarpur", "Purnia"]
+        };
+
+        const hospitals = {
+            Lucknow: ["Optimus Healthcare", "Priyan17singh ", "NehaCare","NashraCare"],
+            Varanasi: ["Optimus Healthcare", "Mritesh108", "SecureCare"],
+            Gorakhpur: ["Optimus Healthcare", "KalaMotaKaran", "UparWala"],
+            Siwan: ["Optimus Healthcare", "Kaif14", "SecureCare"],
+            Mirzapur: ["Optimus Healthcare", "Mritesh108", "Nishant07Care"],
+            Kanpur: ["Optimus Healthcare","KaranCare","KarjanHealth","KMKDK","Kanpur Med", "Kanpur Care", "Kanpur Heart"],
+            Agra: ["Optimus Healthcare","Agra Health", "Agra Clinic"],
+            Prayagraj: ["Optimus Healthcare","Prayagraj Hospital", "Prayagraj Care"],
+            Mumbai: ["Optimus Healthcare","Mumbai General", "Mumbai Heart", "Mumbai Med"],
+            Pune: ["Optimus Healthcare","Pune Medical", "Pune Heart", "Pune Clinic"],
+            Nagpur: ["Optimus Healthcare","Nagpur Medical", "Nagpur Heart"],
+            Thane: ["Optimus Healthcare","Thane Care", "Thane General"],
+            Nashik: ["Optimus Healthcare","Nashik Med", "Nashik Clinic"],
+            Bangalore: ["Optimus Healthcare","Bangalore Health", "Bangalore General", "Bangalore Care"],
+            Mysore: ["Optimus Healthcare","Mysore Med", "Mysore Clinic"],
+            Hubli: ["Optimus Healthcare","Hubli Hospital", "Hubli Care"],
+            Mangalore: ["Optimus Healthcare","Mangalore Clinic", "Mangalore Health"],
+            Belgaum: ["Optimus Healthcare","Belgaum Heart", "Belgaum Hospital"],
+            Chennai: ["Optimus Healthcare","Chennai General", "Chennai Care"],
+            Coimbatore: ["Optimus Healthcare","Coimbatore Health", "Coimbatore Heart"],
+            Madurai: ["Optimus Healthcare","Madurai Med", "Madurai Clinic"],
+            Tiruchirappalli: ["Optimus Healthcare","Tiruchirappalli Hospital"],
+            Salem: ["Optimus Healthcare","Salem Med", "Salem Care"],
+            Kolkata: ["Optimus Healthcare","Kolkata General", "Kolkata Care"],
+            Durgapur: ["Optimus Healthcare","Durgapur Med", "Durgapur Care"],
+            Siliguri: ["Optimus Healthcare","Siliguri Hospital", "Siliguri Med"],
+            Asansol: ["Optimus Healthcare","Asansol Heart", "Asansol Hospital"],
+            Darjeeling: ["Optimus Healthcare","Darjeeling Health", "Darjeeling Clinic"],
+            Patna: ["Optimus Healthcare","Patna Health", "Patna Clinic"],
+            Gaya: ["Optimus Healthcare","Gaya Med", "Gaya Clinic"],
+            Bhagalpur: ["Optimus Healthcare","Bhagalpur Hospital", "Bhagalpur Med"],
+            Muzaffarpur: ["Optimus Healthcare","Muzaffarpur Health", "Muzaffarpur Med"],
+            Purnia: ["Optimus Healthcare","Purnia General", "Purnia Care"]
+        };
+
+        const departments = {
+            "Optimus Healthcare": ["Cardiology", "Neurology", "Orthopedics", "Pediatrics"],
+            "Priyan17singh": ["General Medicine", "Surgery", "Gynecology"],
+            "NehaCare": ["General Medicine", "Dentistry"],
+            "NashraCare": ["ENT", "Dermatology"],
+            // Add other hospitals and their departments here
+        };
+
+        const bookedSlots = {};
+
+        const stateSelect = document.getElementById("state");
+        Object.keys(statesAndDistricts).forEach(state => {
+            const option = document.createElement("option");
+            option.value = state;
+            option.textContent = state;
+            stateSelect.appendChild(option);
+        });
+
+        function loadDistricts() {
+            const districtSelect = document.getElementById("district");
+            const state = stateSelect.value;
+            districtSelect.innerHTML = '<option value="" disabled selected>Choose a District</option>';
+            statesAndDistricts[state].forEach(district => {
+                const option = document.createElement("option");
+                option.value = district;
+                option.textContent = district;
+                districtSelect.appendChild(option);
+            });
+
+            // Reset hospital, department and appointment type
+            document.getElementById("hospital").innerHTML = '<option value="" disabled selected>Choose a Hospital</option>';
+            document.getElementById("department").innerHTML = '<option value="" disabled selected>Choose a Department</option>';
+            document.getElementById("appointment-type").value = "";
+            document.getElementById("charges-preview").textContent = "Charges: Not Selected";
+        }
+
+        function loadHospitals() {
+            const hospitalSelect = document.getElementById("hospital");
+            const district = document.getElementById("district").value;
+            hospitalSelect.innerHTML = '<option value="" disabled selected>Choose a Hospital</option>';
+            if (district) {
+                hospitals[district].forEach(hospital => {
+                    const option = document.createElement("option");
+                    option.value = hospital;
+                    option.textContent = hospital;
+                    hospitalSelect.appendChild(option);
+                });
+            }
+        }
+
+        function loadDepartments() {
+            const departmentSelect = document.getElementById("department");
+            const hospital = document.getElementById("hospital").value;
+            departmentSelect.innerHTML = '<option value="" disabled selected>Choose a Department</option>';
+            if (hospital) {
+                departments[hospital].forEach(department => {
+                    const option = document.createElement("option");
+                    option.value = department;
+                    option.textContent = department;
+                    departmentSelect.appendChild(option);
+                });
+            }
+        }
+
+        function updateCharges() {
+            const type = document.getElementById("appointment-type").value;
+            document.getElementById("charges-preview").textContent = `Charges: ₹${appointmentCharges[type]}`;
+        }
+
+        function checkAvailability() {
+            const state = stateSelect.value;
+            const district = document.getElementById("district").value;
+            const hospital = document.getElementById("hospital").value;
+            const department = document.getElementById("department").value;
+            const type = document.getElementById("appointment-type").value;
+            const charges = appointmentCharges[type];
+            const date = document.getElementById("date").value;
+            const time = document.getElementById("time").value;
+
+            const errorMessage = document.getElementById("error-message");
+            errorMessage.style.display = "none";
+
+            if (!state || !district || !hospital || !department || !type || !date || !time) {
+                errorMessage.textContent = "Please fill in all fields.";
+                errorMessage.style.display = "block";
+                return;
+            }
+
+            const hour = parseInt(time.split(":")[0]);
+            if (hour < 10 || hour > 16) {
+                errorMessage.textContent = "Appointments are only available between 10 AM and 4 PM.";
+                errorMessage.style.display = "block";
+                return;
+            }
+
+            const key = `${date}-${time}-${hospital}-${department}`;
+            if (!bookedSlots[key]) bookedSlots[key] = 0;
+
+            if (bookedSlots[key] >= 5) {
+                errorMessage.textContent = "This slot is fully booked. Please choose another time.";
+                errorMessage.style.display = "block";
+                return;
+            }
+
+            bookedSlots[key]++;
+            addHistoryRow(state, district, hospital, department, type, charges, date, time);
+            alert("Appointment booked successfully!");
+        }
+
+        function addHistoryRow(state, district, hospital, department, type, charges, date, time) {
+            const historyBody = document.getElementById("history-body");
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${state}</td>
+                <td>${district}</td>
+                <td>${hospital}</td>
+                <td>${department}</td>
+                <td>${type}</td>
+                <td>₹${charges}</td>
+                <td>${date}</td>
+                <td>${time}</td>
+                <td>Booked</td>
+            `;
+            historyBody.appendChild(row);
+        }
+    </script>
+</body>
+</html>

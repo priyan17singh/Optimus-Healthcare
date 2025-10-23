@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPTIMUS HEALTHCARE</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        header {
+            padding: 20px 10px;
+            background: #2c3e50;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            width: 80px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            margin-right: 15px; /* Space between logo and text */
+        }
+
+        h2 {
+            background-color: #a7166a;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        select, input[type="text"], input[type="submit"], input[type="number"], input[type="email"], input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #8b0b8f;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #046b91;
+        }
+
+        .camp {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .camp:hover {
+            background-color: #f1f1f1;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            font-size: 1em;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .camp button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .camp button:hover {
+            background-color: #2980b9;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="Projectlogo.jpg" alt="MRITESH108 Healthcare Logo" class="logo">
+        <div>
+            <h1>OPTIMUS HEALTHCARE</h1>
+            <p>Your One-Stop Platform for Seamless Healthcare Services</p>
+        </div>
+    </header>
+    <h2>Blood Donor Registration</h2>
+    <div class="container" id="donorFormContainer">
+        <form id="donorForm">
+            <label for="state">Select State</label>
+            <select id="state" required>
+                <option value="">Choose State</option>
+            </select>
+
+            <label for="district">Select District</label>
+            <select id="district" required>
+                <option value="">Choose District</option>
+            </select>
+
+            <label for="date">Select Date</label>
+            <input type="date" id="date" required>
+
+            <input type="submit" value="Find Camps">
+        </form>
+    </div>
+
+    <div class="container hidden" id="campContainer">
+        <h2>Available Camps</h2>
+        <div id="camps"></div>
+        <a href="#" class="back-button" id="backToFormButton">Back</a>
+    </div>
+
+    <div class="container hidden" id="registrationContainer">
+        <h2>Register for Camp</h2>
+        <form id="registrationForm">
+            <input type="hidden" id="selectedCamp" required>
+
+            <label for="aadhar">Aadhaar ID</label>
+            <input type="text" id="aadhar" maxlength="12" required>
+
+            <label for="mobile">Mobile Number</label>
+            <input type="number" id="mobile" required>
+
+            <label for="email">Email (optional)</label>
+            <input type="email" id="email">
+
+            <input type="submit" value="Register">
+        </form>
+    </div>
+
+    <a href="bloodbankpage1.html" class="back-button">Back</a>
+
+    <footer>
+        &copy; 2025 OPTIMUS HEALTHCARE | All Rights Reserved  
+    </footer>
+
+    <script>
+        const statesAndDistricts = {
+            "Maharashtra": ["Mumbai", "Pune", "Nagpur"],
+            "Karnataka": ["Bangalore", "Mysore", "Mangalore"],
+            "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai"],
+            // Add more states and districts as needed
+        };
+
+        const camps = {
+            "Mumbai": [
+                { date: "2025-12-21", time: "10:00 AM - 2:00 PM", location: "XYZ Community Hall", contact: "1234567890", doctor: "Dr. A. Kumar" },
+                { date: "2025-12-22", time: "11:00 AM - 3:00 PM", location: "ABC Park", contact: "0987654321", doctor: "Dr. B. Singh" }
+            ],
+            "Pune": [
+                { date: "2025-12-23", time: "9:00 AM - 1:00 PM", location: "LMN Hospital", contact: "1122334455", doctor: "Dr. C. Sharma" },
+                { date: "2025-12-24", time: "10:00 AM - 2:00 PM", location: "OPQ School", contact: "6677889900", doctor: "Dr. D. Verma" }
+            ],
+            "Nagpur": [
+                { date: "2025-12-25", time: "12:00 PM - 4:00 PM", location: "UVW Stadium", contact: "2233445566", doctor: "Dr. E. Patil" }
+            ],
+            // Add more camps for other districts as needed
+        };
+
+        const stateSelect = document.getElementById('state');
+        const districtSelect = document.getElementById('district');
+        const dateInput = document.getElementById('date');
+        const donorForm = document.getElementById('donorForm');
+        const donorFormContainer = document.getElementById('donorFormContainer');
+        const campContainer = document.getElementById('campContainer');
+        const campsDiv = document.getElementById('camps');
+        const backToFormButton = document.getElementById('backToFormButton');
+        const registrationContainer = document.getElementById('registrationContainer');
+        const registrationForm = document.getElementById('registrationForm');
+        const selectedCampInput = document.getElementById('selectedCamp');
+        const aadharInput = document.getElementById('aadhar');
+        const mobileInput = document.getElementById('mobile');
+        const emailInput = document.getElementById('email');
+
+        // Populate the state dropdown
+        for (const state in statesAndDistricts) {
+            const option = document.createElement('option');
+            option.value = state;
+            option.textContent = state;
+            stateSelect.appendChild(option);
+        }
+
+        // Populate the district dropdown based on selected state
+        stateSelect.addEventListener('change', () => {
+            districtSelect.innerHTML = '<option value="">Choose District</option>'; // Reset districts
+            const selectedState = stateSelect.value;
+            if (selectedState) {
+                const districts = statesAndDistricts[selectedState];
+                districts.forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+        });
+
+        // Form submission handler to find camps
+        donorForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const state = stateSelect.value;
+            const district = districtSelect.value;
+            const date = dateInput.value;
+
+            if (state && district && date) {
+                donorFormContainer.classList.add('hidden');
+                campContainer.classList.remove('hidden');
+                campsDiv.innerHTML = '';
+                if (camps[district]) {
+                    const filteredCamps = camps[district].filter(camp => camp.date === date);
+                    if (filteredCamps.length > 0) {
+                        filteredCamps.forEach((camp, index) => {
+                            const campDiv = document.createElement('div');
+                            campDiv.classList.add('camp');
+                            campDiv.innerHTML = `
+                                <p><strong>Date:</strong> ${camp.date}</p>
+                                <p><strong>Time:</strong> ${camp.time}</p>
+                                <p><strong>Location:</strong> ${camp.location}</p>
+                                <p><strong>Contact:</strong> ${camp.contact}</p>
+                                <p><strong>Doctor:</strong> ${camp.doctor}</p>
+                                <button onclick="selectCamp(${index}, '${district}')">Register</button>
+                            `;
+                            campsDiv.appendChild(campDiv);
+                        });
+                    } else {
+                        campsDiv.textContent = 'No camps available on the selected date.';
+                    }
+                } else {
+                    campsDiv.textContent = 'No camps available.';
+                }
+            } else {
+                alert('Please fill all the fields correctly.');
+            }
+        });
+
+        // Back to form handler
+        backToFormButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            campContainer.classList.add('hidden');
+            donorFormContainer.classList.remove('hidden');
+        });
+
+        // Select camp handler
+        function selectCamp(index, district) {
+            const selectedCamp = camps[district][index];
+            selectedCampInput.value = JSON.stringify(selectedCamp);
+            campContainer.classList.add('hidden');
+            registrationContainer.classList.remove('hidden');
+        }
+
+        // Registration form submission handler
+        registrationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const aadhar = aadharInput.value;
+            const mobile = mobileInput.value;
+            const email = emailInput.value;
+            const selectedCamp = JSON.parse(selectedCampInput.value);
+
+            if (aadhar && aadhar.length === 12 && mobile) {
+                alert(`Registration successful!\nCamp Details:\nDate: ${selectedCamp.date}\nTime: ${selectedCamp.time}\nLocation: ${selectedCamp.location}\nContact: ${selectedCamp.contact}\nDoctor: ${selectedCamp.doctor}\nAadhaar ID: ${aadhar}\nMobile: ${mobile}\nEmail: ${email}`);
+                // Here you can add code to submit the registration data to the server
+            } else {
+                alert('Please fill all the fields correctly.');
+            }
+        });
+    </script>
+</body>
+</html>

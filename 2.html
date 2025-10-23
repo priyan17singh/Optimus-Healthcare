@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor's Patient Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+        }
+        .search-box {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .back-button {
+            margin-top: 20px;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #6c757d;
+            color: #fff;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Search Patient by Aadhar ID</h1>
+        <div class="search-box">
+            <input type="text" id="aadharId" placeholder="Enter Aadhar ID">
+            <button onclick="searchPatient()">Search</button>
+        </div>
+        <div class="result" id="result"></div>
+        <a href="doctorpage1.html" class="back-button">Back</a>
+    </div>
+
+    <script>
+        const patients = {
+            "Ajay Chaudhary": {
+                aadhar: "123456789012",
+                prescriptions: [
+                    {
+                        doctor: "Dr. Priyanshu Singh",
+                        medicinesGiven: "Paracetamol, Ibuprofen",
+                        checkups: "Blood Test, X-Ray",
+                        dateTime: "2025-01-01 10:00 AM"
+                    },
+                    {
+                        doctor: "Dr. Ritesh Pandey",
+                        medicinesGiven: "Amoxicillin, Metformin",
+                        checkups: "Blood Pressure, ECG",
+                        dateTime: "2025-01-10 02:00 PM"
+                    }
+                ]
+            },
+            "Karjan Prajapati": {
+                aadhar: "234567890123",
+                prescriptions: [
+                    {
+                        doctor: "Dr. Nishant Tripathi",
+                        medicinesGiven: "Aspirin, Atorvastatin",
+                        checkups: "MRI, Ultrasound",
+                        dateTime: "2025-02-01 11:30 AM"
+                    },
+                    {
+                        doctor: "Dr. Priyanshu Singh",
+                        medicinesGiven: "Clopidogrel, Losartan",
+                        checkups: "Blood Test, ECG",
+                        dateTime: "2025-02-15 09:00 AM"
+                    }
+                ]
+            },
+            "Alice Johnson": {
+                aadhar: "345678901234",
+                prescriptions: [
+                    {
+                        doctor: "Dr. Priyanshu Singh",
+                        medicinesGiven: "Omeprazole, Lisinopril",
+                        checkups: "CT Scan, Blood Sugar",
+                        dateTime: "2025-03-15 01:00 PM"
+                    },
+                    {
+                        doctor: "Dr. Ritesh Pandey",
+                        medicinesGiven: "Simvastatin, Glucophage",
+                        checkups: "Cholesterol Test, Eye Exam",
+                        dateTime: "2025-03-20 10:00 AM"
+                    }
+                ]
+            },
+            "Subhash Tatkare": {
+                aadhar: "456789012345",
+                prescriptions: [
+                    {
+                        doctor: "Dr. Ritesh Pandey",
+                        medicinesGiven: "Simvastatin, Glucophage",
+                        checkups: "Cholesterol Test, Eye Exam",
+                        dateTime: "2025-04-05 09:00 AM"
+                    },
+                    {
+                        doctor: "Dr. Nishant Tripathi",
+                        medicinesGiven: "Amlodipine, Metformin",
+                        checkups: "Kidney Function Test, ECG",
+                        dateTime: "2025-04-15 11:00 AM"
+                    }
+                ]
+            },
+            "Mahesh Pathak": {
+                aadhar: "567890123456",
+                prescriptions: [
+                    {
+                        doctor: "Dr. Nishant Tripathi",
+                        medicinesGiven: "Ciprofloxacin, Prednisone",
+                        checkups: "Liver Function Test, ECG",
+                        dateTime: "2025-05-20 03:15 PM"
+                    },
+                    {
+                        doctor: "Dr. Priyanshu Singh",
+                        medicinesGiven: "Hydrochlorothiazide, Metoprolol",
+                        checkups: "Kidney Function Test, X-Ray",
+                        dateTime: "2025-06-01 10:45 AM"
+                    }
+                ]
+            },
+            "Ankur Warikoo": {
+                aadhar: "678901234567",
+                prescriptions: [
+                    {
+                        doctor: "Dr. Priyanshu Singh",
+                        medicinesGiven: "Hydrochlorothiazide, Metoprolol",
+                        checkups: "Kidney Function Test, X-Ray",
+                        dateTime: "2025-06-25 08:45 AM"
+                    },
+                    {
+                        doctor: "Dr. Ritesh Pandey",
+                        medicinesGiven: "Paracetamol, Ibuprofen",
+                        checkups: "Blood Test, X-Ray",
+                        dateTime: "2025-07-05 02:00 PM"
+                    }
+                ]
+            },
+            "Monu Mahto": {
+                aadhar: "789012345678",
+                prescriptions: [
+                    {
+                        doctor: "Dr. Ritesh Pandey",
+                        medicinesGiven: "Paracetamol, Ibuprofen",
+                        checkups: "Blood Test, X-Ray",
+                        dateTime: "2025-07-15 04:00 PM"
+                    },
+                    {
+                        doctor: "Dr. Nishant Tripathi",
+                        medicinesGiven: "Lisinopril, Metformin",
+                        checkups: "CT Scan, Blood Sugar",
+                        dateTime: "2025-07-20 01:30 PM"
+                    }
+                ]
+            }
+        };
+
+        function searchPatient() {
+            const aadharId = document.getElementById('aadharId').value;
+            const resultDiv = document.getElementById('result');
+            let patientFound = false;
+
+            for (const [name, info] of Object.entries(patients)) {
+                if (info.aadhar === aadharId) {
+                    let prescriptionsHtml = '';
+                    info.prescriptions.forEach(prescription => {
+                        prescriptionsHtml += `<p><strong>Doctor:</strong> ${prescription.doctor}</p>
+                                              <p><strong>Medicines Given:</strong> ${prescription.medicinesGiven}</p>
+                                              <p><strong>Checkups:</strong> ${prescription.checkups}</p>
+                                              <p><strong>Date and Time:</strong> ${prescription.dateTime}</p><hr>`;
+                    });
+                    resultDiv.innerHTML = `<h2>Patient Name: ${name}</h2>
+                                           <p>Aadhar ID: ${info.aadhar}</p>
+                                           ${prescriptionsHtml}`;
+                    patientFound = true;
+                    break;
+                }
+            }
+
+            if (!patientFound) {
+                resultDiv.innerHTML = '<p>Patient not found.</p>';
+            }
+        }
+    </script>
+</body>
+</html>

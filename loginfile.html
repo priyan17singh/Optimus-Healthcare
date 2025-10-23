@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPTIMUS Healthcare</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 30px;
+            background-color: rgb(231, 231, 231);
+            overflow-y: auto;
+            padding-top: 120px;
+            position: relative;
+        }
+
+        header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            background-color: #2c3e50;
+            padding: 20px 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 5;
+        }
+        
+        footer {
+            display: flex;
+            width: 100%;
+            padding: 5px 20px;
+            background: #2c3e50;
+            color: #fff;
+            font-size: 0.9em;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            width: 80px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .heading {
+            color: white;
+            font-size: 24px;
+        }
+
+        .title {
+            color: white;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+        }
+
+        .container {
+            margin-top: 5px;
+            height: 600px;
+            width: 500px;
+            background-color: white;
+            box-shadow: 8px 8px 20px rgb(128, 128, 128);
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 10;
+            overflow-y: scroll;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        .btn {
+            height: 60px;
+            width: 300px;
+            margin: 20px auto;
+            box-shadow: 10px 10px 30px rgb(254, 215, 188);
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .login,
+        .signup {
+            font-size: 22px;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .slider {
+            height: 60px;
+            width: 150px;
+            border-radius: 50px;
+            background-image: linear-gradient(to right, rgb(255, 195, 110), rgb(255, 146, 91));
+            position: absolute;
+            top: 60px;
+            left: 100px;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .moveslider {
+            left: 250px;
+        }
+
+        .form-section {
+            height: 500px;
+            width: 1000px;
+            padding: 20px 0;
+            display: flex;
+            position: relative;
+            transition: all 0.5s ease-in-out;
+            left: 0px;
+        }
+
+        .form-section-move {
+            left: -500px;
+        }
+
+        .login-box  {
+            height: 100%;
+            width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0px 40px;
+        }
+
+        .signup-box {
+            height: 100%;
+            width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0px 40px;
+        }
+
+        .login-box {
+            gap: 50px;
+        }
+
+        .signup-box {
+            gap: 20px;
+        }
+
+        .ele {
+            height: 60px;
+            width: 400px;
+            outline: none;
+            border: none;
+            color: rgb(77, 77, 77);
+            background-color: rgb(240, 240, 240);
+            border-radius: 50px;
+            padding-left: 30px;
+            font-size: 18px;
+        }
+
+        .clkbtn {
+            height: 40px;
+            width: 120px;
+            border-radius: 50px;
+            background-color: #877ce5;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            color: white;
+        }
+
+        .clkbtn1 {
+            height: 40px;
+            width: 120px;
+            border-radius: 5px;
+            background-color: #877c69;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            color: white;
+        }
+
+        .clkbtn:hover {
+            background-color: #0056b3;
+        }
+
+        @media screen and (max-width: 650px) {
+            .container {
+                height: 600px;
+                width: 300px;
+            }
+
+            .btn {
+                height: 50px;
+                width: 200px;
+                margin: 20px auto;
+            }
+
+            .login,
+            .signup {
+                font-size: 19px;
+            }
+
+            .slider {
+                height: 50px;
+                width: 100px;
+                left: 50px;
+            }
+
+            .moveslider {
+                left: 150px;
+            }
+
+            .form-section {
+                height: 500px;
+                width: 600px;
+            }
+
+            .form-section-move {
+                left: -300px;
+            }
+
+            .login-box,
+            .signup-box {
+                height: 100%;
+                width: 300px;
+            }
+
+            .ele {
+                height: 50px;
+                width: 250px;
+                font-size: 15px;
+            }
+
+            .clkbtn {
+                height: 50px;
+                width: 130px;
+                font-size: 19px;
+            }
+            
+        }
+    </style>
+</head>
+<body>
+    <!-- Login/Signup Page -->
+    <header>
+        <!-- Logo with border-radius -->
+        <img src="Projectlogo.jpg" alt="MRITESH108 Logo" class="logo">
+        <div>
+            <h1 class="heading">OPTIMUS Healthcare</h1>
+            <h3 class="title">Login & Registration Form</h3>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Back Button -->
+        <button class="clkbtn1" onclick="window.location.href='index.html'">Back</button>
+
+        <div class="slider"></div>
+        <div class="btn">
+            <button class="login">Login</button>
+            <button class="signup">Signup</button>
+        </div>
+
+        <div class="form-section">
+            <!-- Login Form -->
+            <div class="login-box">
+                <input type="text" id="aadhar-login" class="ele" placeholder="Enter Aadhar Number" required>
+                <input type="password" id="password-login" class="ele" placeholder="Password" required>
+                <button class="clkbtn" onclick="loginUser()">Login</button>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="signup-box">
+                <input type="text" id="name-signup" class="ele" placeholder="Enter your name" required>
+                <input type="text" id="aadhar-signup" class="ele" placeholder="Enter Aadhar Number" required>
+                <input type="email" id="email-signup" class="ele" placeholder="youremail@email.com" required>
+                <input type="password" id="password-signup" class="ele password" placeholder="Password" required>
+                <input type="password" id="confirm-password-signup" class="ele password" placeholder="Confirm Password" required>
+                <button class="clkbtn" onclick="signupUser()">Signup</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; 2024 OPTIMUS HEALTHCARE | All Rights Reserved  
+    </footer>
+
+    <script>
+        let signup = document.querySelector(".signup");
+        let login = document.querySelector(".login");
+        let slider = document.querySelector(".slider");
+        let formSection = document.querySelector(".form-section");
+
+        signup.addEventListener("click", () => {
+            slider.classList.add("moveslider");
+            formSection.classList.add("form-section-move");
+        });
+
+        login.addEventListener("click", () => {
+            slider.classList.remove("moveslider");
+            formSection.classList.remove("form-section-move");
+        });
+
+        // Predefined users
+        const predefinedUsers = {
+            "Ajay Chaudhary": { aadhar: "123456789012", password: "password1" },
+            "Karjan Prajapati": { aadhar: "234567890123", password: "password2" },
+            "Alice Johnson": { aadhar: "345678901234", password: "password3" },
+            "Subhash Tatkare": { aadhar: "456789012345", password: "password4" },
+            "Mahesh Pathak": { aadhar: "567890123456", password: "password5" },
+            "Ankur Warikoo": { aadhar: "678901234567", password: "password6" },
+            "Monu Mahto": { aadhar: "789012345678", password: "password7" }
+        };
+
+        // Initialize users from localStorage or use predefined users
+        let users = JSON.parse(localStorage.getItem('users')) || predefinedUsers;
+
+        function loginUser() {
+            const aadhar = document.getElementById('aadhar-login').value;
+            const password = document.getElementById('password-login').value;
+
+            for (let name in users) {
+                if (users[name].aadhar === aadhar && users[name].password === password) {
+                    localStorage.setItem('user', name);
+                    window.location.href = "patientpage1.html";
+                    return;
+                }
+            }
+            alert("Invalid Aadhar Number or Password.");
+        }
+
+        function signupUser() {
+            const name = document.getElementById('name-signup').value;
+            const aadhar = document.getElementById('aadhar-signup').value;
+            const email = document.getElementById('email-signup').value;
+            const password = document.getElementById('password-signup').value;
+            const confirmPassword = document.getElementById('confirm-password-signup').value;
+
+            if (name && aadhar && email && password && confirmPassword) {
+                if (password === confirmPassword) {
+                    if (users[name]) {
+                        alert("User already exists.");
+                    } else {
+                        users[name] = { aadhar, email, password };
+                        localStorage.setItem('users', JSON.stringify(users));
+                        localStorage.setItem('user', name);
+                        window.location.href = "patientpage1.html";
+                    }
+                } else {
+                    alert("Passwords do not match.");
+                }
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+    </script>
+</body>
+</html>

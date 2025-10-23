@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPTIMUS HEALTHCARE</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header, footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .download-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-button:hover {
+            background-color: #0056b3;
+        }
+        .back-button {
+            margin: 20px;
+            margin-left: 700px;
+            width: 50px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            text-align: center;
+        }
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Patient History</h1>
+    </header>
+   
+    <div class="container">
+        <h2>History</h2>
+        <div id="history-content">
+            <!-- History will be dynamically generated here -->
+        </div>
+        <button class="download-button" onclick="downloadPDF()">Download as PDF</button>
+    </div>
+        <a href="patientpage1.html" class="back-button">Back</a>
+    <footer>
+        <p>&copy; 2024 OPTIMUS HEALTHCARE | ALL RIGHTS RESERVED </p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Retrieve history from localStorage
+            const history = JSON.parse(localStorage.getItem('patientHistory')) || [];
+
+            // Group history by year and doctor
+            const historyByYearAndDoctor = history.reduce((acc, record) => {
+                const year = new Date(record.date).getFullYear();
+                const doctor = record.doctorName;
+
+                if (!acc[year]) {
+                    acc[year] = {};
+                }
+
+                if (!acc[year][doctor]) {
+                    acc[year][doctor] = [];
+                }
+
+                acc[year][doctor].push(record);
+
+                return acc;
+            }, {});
+
+            // Generate history content
+            const historyContent = document.getElementById('history-content');
+            for (const [year, doctors] of Object.entries(historyByYearAndDoctor)) {
+                const yearDiv = document.createElement('div');
+                yearDiv.className = 'folder';
+                yearDiv.innerHTML = `<div class="folder-header" onclick="toggleFolder('${year}')">${year}</div>`;
+                const yearContent = document.createElement('div');
+                yearContent.className = 'folder-content';
+                yearContent.id = year;
+
+                for (const [doctor, records] of Object.entries(doctors)) {
+                    const doctorDiv = document.createElement('div');
+                    doctorDiv.className = 'folder';
+                    doctorDiv.innerHTML = `<div class="folder-header" onclick="toggleFolder('${year}-${doctor}')">${doctor}</div>`;
+                    const doctorContent = document.createElement('div');
+                    doctorContent.className = 'folder-content';
+                    doctorContent.id = `${year}-${doctor}`;
+
+                    const table = document.createElement('table');
+                    const thead = document.createElement('thead');
+                    thead.innerHTML = `
+                        <tr>
+                            <th>Date</th>
+                            <th>Patient Name</th>
+                            <th>Medications</th>
+                            <th>Checkups</th>
+                            <th>Instructions</th>
+                        </tr>
+                    `;
+                    table.appendChild(thead);
+
+                    const tbody = document.createElement('tbody');
+                    records.forEach(record => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${record.date}</td>
+                            <td>${record.patientName}</td>
+                            <td>${record.medications.map(med => `${med.name} (${med.dosage})`).join(', ')}</td>
+                            <td>${record.checkups.join(', ')}</td>
+                            <td>${record.instructions}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                    table.appendChild(tbody);
+
+                    doctorContent.appendChild(table);
+                    doctorDiv.appendChild(doctorContent);
+                    yearContent.appendChild(doctorDiv);
+                }
+
+                yearDiv.appendChild(yearContent);
+                historyContent.appendChild(yearDiv);
+            }
+        });
+
+        function toggleFolder(folderId) {
+            const folderContent = document.getElementById(folderId);
+            folderContent.style.display = folderContent.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.text('Patient History', 10, 10);
+
+            const folders = document.querySelectorAll('.folder');
+
+            let y = 20;
+
+            for (const folder of folders) {
+                const folderHeader = folder.querySelector('.folder-header').textContent;
+                doc.text(folderHeader, 10, y);
+                y += 10;
+
+                const subfolders = folder.querySelectorAll('.folder');
+
+                for (const subfolder of subfolders) {
+                    const subfolderHeader = subfolder.querySelector('.folder-header').textContent;
+                    doc.text(subfolderHeader, 20, y);
+                    y += 10;
+
+                    const table = subfolder.querySelector('table');
+                    const rows = table.querySelectorAll('tr');
+
+                    for (const row of rows) {
+                        const cells = row.querySelectorAll('td, th');
+                        let x = 30;
+
+                        for (const cell of cells) {
+                            doc.text(cell.textContent, x, y);
+                            x += 40;
+                        }
+
+                        y += 10;
+                    }
+                }
+            }
+
+            doc.save('patient-history.pdf');
+        }
+    </script>
+</body>
+</html>

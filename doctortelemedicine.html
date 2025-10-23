@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Telemedicine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f3f4f6;
+        }
+        #video-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            margin-top: 20px;
+        }
+        video {
+            width: 48%;
+            height: auto;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        #patient-selection {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Doctor Telemedicine</h1>
+    <div id="patient-selection">
+        <select id="patientSelect">
+            <option value="">Select a patient</option>
+            <option value="123456789012">Ajay Chaudhary (Aadhar: 123456789012)</option>
+            <option value="234567890123">Karjan Prajapati (Aadhar: 234567890123)</option>
+            <option value="345678901234">Alice Johnson (Aadhar: 345678901234)</option>
+            <option value="456789012345">Subhash Tatkare (Aadhar: 456789012345)</option>
+            <option value="567890123456">Mahesh Pathak (Aadhar: 567890123456)</option>
+            <option value="678901234567">Ankur Warikoo (Aadhar: 678901234567)</option>
+            <option value="789012345678">Monu Mahto (Aadhar: 789012345678)</option>
+        </select>
+        <button onclick="connectToSelectedPatient()">Connect</button>
+    </div>
+    <div id="video-container">
+        <video id="localVideo" autoplay muted></video>
+        <video id="remoteVideo" autoplay></video>
+    </div>
+
+    <script src="webrtc.js"></script>
+    <script>
+        const doctorAadhar = "452819885248"; // Change this to the logged-in doctor's Aadhar ID
+        startDoctor();
+
+        function connectToSelectedPatient() {
+            const patientAadhar = document.getElementById('patientSelect').value;
+            if (patientAadhar) {
+                setupConnection();
+                sendToServer({
+                    type: 'connect-to-patient',
+                    doctorAadhar: doctorAadhar,
+                    patientAadhar: patientAadhar
+                });
+            } else {
+                alert("Please select a patient.");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPTIMUS HEALTHCARE</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 30px;
+            background-color: rgb(231, 231, 231);
+            overflow-y: auto;
+            padding-top: 100px; /* Space for the fixed header */
+        }
+
+        header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px; /* Space between logo and text */
+            background-color: #2c3e50;
+            padding: 20px 10px;
+            position: fixed; /* Make the header fixed */
+            top: 0; /* Stick it to the top */
+            left: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            width: 80px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .heading {
+            color: white;
+            font-size: 24px;
+        }
+
+        .title {
+            color: white;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+        }
+
+        .container {
+            height: 400px;
+            width: 500px;
+            background-color: white;
+            box-shadow: 8px 8px 20px rgb(128, 128, 128);
+            position: relative;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+
+        .form-section {
+            height: 100%;
+            width: 100%;
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .ele {
+            height: 60px;
+            width: 400px;
+            outline: none;
+            border: none;
+            color: rgb(77, 77, 77);
+            background-color: rgb(240, 240, 240);
+            border-radius: 50px;
+            padding-left: 30px;
+            font-size: 18px;
+        }
+
+        .clkbtn {
+            height: 50px;
+            width: 150px;
+            border-radius: 50px;
+            background-color: #0056b3;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            color: white;
+        }
+
+        .clkbtn:hover {
+            background-color: #003f7f;
+        }
+
+        .clkbtn1 {
+            height: 40px;
+            width: 120px;
+            border-radius: 5px;
+            background-color: #877c69;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            color: white;
+        }
+
+        .clkbtn1:hover {
+            background-color: #6b5c52;
+        }
+    </style>
+</head>
+<body>
+    <!-- Blood Bank Login Page -->
+    <header>
+        <!-- Logo with border-radius -->
+        <img src="Projectlogo.jpg" alt="MRITESH108 Logo" class="logo">
+        <div>
+            <h1 class="heading">OPTIMUS HEALTHCARE</h1>
+            <h3 class="title">Blood Bank Login</h3>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Back Button -->
+        <button class="clkbtn1" onclick="window.location.href='index.html'">Back</button>
+
+        <div class="form-section">
+            <!-- Login Form -->
+            <div class="login-box">
+                <input type="text" id="bloodbank-id" class="ele" placeholder="Enter Blood Bank ID" required>
+                <input type="password" id="password" class="ele" placeholder="Password" required>
+                <button class="clkbtn" onclick="loginBloodBank()">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Blood Bank Login Function
+        function loginBloodBank() {
+            const bloodBankID = document.getElementById('bloodbank-id').value;
+            const password = document.getElementById('password').value;
+
+            if (bloodBankID && password) {
+                // Dummy validation for demonstration
+                if (bloodBankID === 'bloodbank' && password === 'password') {
+                    localStorage.setItem('bloodbank', bloodBankID);
+                    window.location.href = "bloodbankpage2.html"; // Redirect to the blood bank dashboard
+                } else {
+                    alert("Invalid Blood Bank ID or Password");
+                }
+            } else {
+                alert("Please enter all details.");
+            }
+        }
+    </script>
+</body>
+</html>
